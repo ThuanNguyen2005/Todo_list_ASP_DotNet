@@ -21,20 +21,15 @@ namespace Todo_list.Controllers
 
 
 
-public async Task<IActionResult> Index(string searchString)
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var tasks = from t in _context.TodoTasks
-                    where t.UserId == userId
-                    select t;
-
-        if (!String.IsNullOrEmpty(searchString))
+        public async Task<IActionResult> Index(string searchString)
         {
-            tasks = tasks.Where(s => s.Title!.Contains(searchString));
+            // Tạm thời lấy TẤT CẢ nhiệm vụ, không quan tâm ai là chủ sở hữu
+            var tasks = await _context.TodoTasks.ToListAsync();
+            return View(tasks);
         }
 
-    // GET: TodoTasks/Details/5
-    public async Task<IActionResult> Details(int? id)
+        // GET: TodoTasks/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -63,18 +58,25 @@ public async Task<IActionResult> Index(string searchString)
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,IsCompleted,CreatedAt")] TodoTask todoTask)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            todoTask.UserId = userId;
-
-            // 3. XÓA UserId KHỎI DANH SÁCH KIỂM TRA LỖI (Quan trọng nhất)
-            ModelState.Remove("UserId");
-
-            if (ModelState.IsValid) // Bây giờ Valid mới có thể bằng True
+            try
             {
+                // 1. Gán ID người dùng
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                todoTask.UserId = userId;
+
+                // 2. ÉP BUỘC LƯU - Bỏ qua IsValid để test
                 _context.Add(todoTask);
                 await _context.SaveChangesAsync();
+
+                // 3. Nếu thành công, nó PHẢI nhảy về Index
                 return RedirectToAction(nameof(Index));
             }
+            catch (Exception ex)
+            {
+                // Nếu có lỗi (ví dụ: lỗi database, thiếu cột...), nó sẽ hiện lỗi ra màn hình cho bạn thấy
+                return Content("LỖI RỒI: " + ex.Message + (ex.InnerException != null ? " - Chi tiết: " + ex.InnerException.Message : ""));
+            }
+        } 
 
         // GET: TodoTasks/Edit/5
         public async Task<IActionResult> Edit(int? id)
