@@ -56,14 +56,6 @@ public async Task<IActionResult> Index(string searchString)
         }
 
         // GET: TodoTasks/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: TodoTasks/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,IsCompleted,CreatedAt")] TodoTask todoTask)
@@ -85,11 +77,6 @@ public async Task<IActionResult> Index(string searchString)
                 return NotFound();
             }
 
-            var todoTask = await _context.TodoTask.FindAsync(id);
-            if (todoTask == null)
-            {
-                return NotFound();
-            }
             return View(todoTask);
         }
 
