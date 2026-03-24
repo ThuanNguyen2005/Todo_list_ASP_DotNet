@@ -28,14 +28,10 @@ public async Task<IActionResult> Index(string searchString)
                     where t.UserId == userId
                     select t;
 
-        // Nếu người dùng có nhập từ khóa, lọc theo tiêu đề
         if (!String.IsNullOrEmpty(searchString))
         {
             tasks = tasks.Where(s => s.Title!.Contains(searchString));
         }
-
-        return View(await tasks.ToListAsync());
-    }
 
     // GET: TodoTasks/Details/5
     public async Task<IActionResult> Details(int? id)
@@ -67,10 +63,7 @@ public async Task<IActionResult> Index(string searchString)
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,IsCompleted,CreatedAt")] TodoTask todoTask)
         {
-            // 1. Lấy ID người dùng hiện tại
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // 2. Gán vào Task
             todoTask.UserId = userId;
 
             // 3. XÓA UserId KHỎI DANH SÁCH KIỂM TRA LỖI (Quan trọng nhất)
@@ -82,10 +75,6 @@ public async Task<IActionResult> Index(string searchString)
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-            // Nếu vẫn lỗi, nó sẽ quay lại trang nhập liệu để bạn sửa
-            return View(todoTask);
-        }
 
         // GET: TodoTasks/Edit/5
         public async Task<IActionResult> Edit(int? id)
