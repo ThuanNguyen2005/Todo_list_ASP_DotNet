@@ -6,9 +6,9 @@ namespace Todo_list.Models
     {
         [Key]
         public int Id { get; set; }
-
+        public string? UserId { get; set; } // Thêm dòng này để lưu ID của người dùng tạo task
         [Required(ErrorMessage = "Tiêu đề không được để trống")]
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
         public string? Description { get; set; }
 

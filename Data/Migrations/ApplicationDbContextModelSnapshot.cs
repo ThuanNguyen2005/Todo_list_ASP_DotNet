@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Todo_list.Data;
 
 #nullable disable
 
@@ -247,7 +246,7 @@ namespace Todo_list.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TodoTask");
+                    b.ToTable("TodoTask", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
