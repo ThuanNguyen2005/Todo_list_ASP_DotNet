@@ -5,39 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Todo_list</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Todo_list.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Todo_list</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="TodoTasks" asp-action="Index">Danh sách Todo</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
+    <div class="d-flex" id="wrapper">
+        <!-- SIDEBAR -->
+        <div class="bg-dark text-white" id="sidebar-wrapper" style="width: 260px; min-height: 100vh;">
+            <div class="sidebar-heading p-4">
+                <h4 class="fw-bold text-uppercase" style="letter-spacing: 2px;">My Tasks</h4>
+            </div>
+            
+            <div class="list-group list-group-flush custom-sidebar">
+                <a asp-controller="TodoTasks" asp-action="Index" class="list-group-item list-group-item-action">
+                    <i class="bi bi-grid-1x2-fill me-2"></i> Tất cả nhiệm vụ
+                </a>
+                
+                <hr class="mx-3 opacity-25">
+                
+                <div class="p-3 pb-1">
+                    <small class="text-muted fw-bold" style="letter-spacing: 1px;">DANH MỤC</small>
                 </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    
+                <a href="#" class="list-group-item list-group-item-action nav-study">
+                    <i class="bi bi-tag-fill me-2"></i>Học tập
+                </a>
+                <a href="#" class="list-group-item list-group-item-action nav-work">
+                    <i class="bi bi-tag-fill me-2"></i>Công việc
+                </a>
+                <a href="#" class="list-group-item list-group-item-action nav-design">
+                    <i class="bi bi-tag-fill me-2"></i>Design
+                </a>
+                <a href="#" class="list-group-item list-group-item-action nav-mobile">
+                    <i class="bi bi-tag-fill me-2"></i>Mobile
+                </a>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div id="page-content-wrapper" class="flex-grow-1">
+            
+            <!-- NAVBAR -->
+            <nav class="navbar navbar-expand-sm navbar-dark p-3 border-bottom shadow-sm" style="background-color: #795FCD !important;">
+                <div class="container-fluid">
+                    <form class="d-flex mx-auto" style="width: 100%; max-width: 500px;" action="/TodoTasks/Index" method="get">
+                        <input class="form-control rounded-pill search-input-custom"
+                               type="search"
+                               name="searchTerm"
+                               placeholder="Tìm kiếm nhiệm vụ...">
+                    </form>
+                    
+                    <div class="ms-auto">
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </nav>
+
+            <main role="main" class="container-fluid p-4">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

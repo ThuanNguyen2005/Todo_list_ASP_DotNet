@@ -51,8 +51,8 @@ namespace Todo_list
             app.UseAuthorization();
 
             app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "default",
+    pattern: "{controller=TodoTasks}/{action=Index}/{id?}");
             app.MapRazorPages(); // Đảm bảo có dòng này để trang Login hoạt động
 
             app.Run();

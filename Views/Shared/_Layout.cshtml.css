@@ -46,3 +46,29 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+/* Tăng độ ưu tiên bằng cách trỏ đích danh từ thẻ header */
+header .navbar .form-control.search-input-custom {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+    border-radius: 20px !important;
+    padding: 8px 20px !important;
+    width: 350px !important; /* Đảm bảo độ rộng không bị co mất */
+    display: block !important; /* Hiện lại nếu đang bị ẩn */
+    transition: all 0.3s ease !important;
+}
+
+/* Màu chữ placeholder để nhìn thấy dòng "Tìm kiếm..." */
+header .navbar .search-input-custom::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* KHI CLICK VÀO: Bừng sáng trắng đặc */
+header .navbar .search-input-custom:focus {
+    background-color: #ffffff !important;
+    color: #212529 !important; /* Chữ đen để dễ đọc */
+    border-color: #ffffff !important;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8) !important;
+    width: 400px !important; /* Hiệu ứng giãn nhẹ ra khi focus cho xịn */
+    outline: none !important;
+}

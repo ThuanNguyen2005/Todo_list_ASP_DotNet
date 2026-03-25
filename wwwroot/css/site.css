@@ -1,62 +1,446 @@
+/* =========================================
+   1. CẤU HÌNH CƠ BẢN (Typography & Reset)
+   ========================================= */
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
-}
-
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
-}
-
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
-}
-/* Làm bảng mềm mại hơn */
-.card {
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.table thead th {
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 0.5px;
-}
-
-/* Hiệu ứng khi di chuột qua hàng của bảng */
-.table-hover tbody tr:hover {
+    margin-bottom: 60px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8f9fa;
-    transition: 0.3s;
 }
 
-/* Tùy chỉnh Badge (nhãn trạng thái) */
-.badge {
-    border-radius: 50px;
+/* Hiệu ứng Focus chung cho các Input/Button */
+.btn:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem rgba(37, 140, 251, 0.5) !important;
+    outline: none;
+}
+
+/* =========================================
+   2. BỐ CỤC CHÍNH (Layout - Sidebar & Content)
+   ========================================= */
+#wrapper {
+    display: flex;
+    overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: 250px;
+    transition: margin .25s ease-out;
+    background-color: #212529; /* Màu tối chuyên nghiệp */
+}
+
+#page-content-wrapper {
+    flex-grow: 1;
+    min-width: 0;
+    width: 100%;
+}
+
+/* =========================================
+   3. THANH ĐIỀU HƯỚNG (Navbar & Search)
+   ========================================= */
+.navbar {
+    background-color: #795FCD !important; /* Màu tím chủ đạo */
+    border-bottom: 1px solid rgba(0,0,0,0.1) !important;
+    padding: 0.8rem 1rem;
+}
+
+.navbar-brand, .nav-link {
+    color: #ffffff !important;
     font-weight: 500;
 }
 
+    .nav-link:hover {
+        color: #e0e0e0 !important;
+        transform: translateY(-1px);
+    }
+
+/* Thanh tìm kiếm trong Navbar */
+/* Trạng thái bình thường: Kính mờ trong suốt */
+/* Trạng thái bình thường */
+.search-input-custom {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+    border-radius: 20px;
+    padding: 8px 20px;
+    transition: all 0.3s ease-in-out;
 }
 
-    .btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    /* Khi người dùng nhấn vào - Chuyển sang trắng đặc */
+    .search-input-custom:focus {
+        background-color: #ffffff !important; /* Ép sang màu trắng */
+        color: #333333 !important; /* Chữ chuyển đen để dễ nhìn */
+        border-color: #ffffff !important;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5) !important; /* Hiệu ứng tỏa sáng trắng */
+        outline: none;
+    }
+
+        /* Đảm bảo chữ placeholder biến mất hoặc mờ đi khi focus */
+        .search-input-custom:focus::placeholder {
+            color: #cccccc !important;
+        }
+/* =========================================
+   4. HỆ THỐNG NÚT BẤM (Buttons)
+   ========================================= */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* Nhóm nút Đăng nhập/Đăng ký */
+/* Nút Đăng ký - Màu Vàng Amber tương phản cực tốt với Tím */
+.btn-signup-custom {
+    background-color: #FF7043 !important; /* Màu Coral hiện đại */
+    color: white !important;
+    border-radius: 30px !important;
+    padding: 8px 22px !important;
+    border: none !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(255, 112, 67, 0.3);
+    margin-right: 10px !important;
+}
+
+.btn-signup-custom:hover {
+    background-color: #F4511E !important; /* Đậm hơn một chút khi hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(244, 81, 30, 0.4);
+    color: white !important;
+}
+
+/* Nút Đăng nhập - Giữ tông trắng kính (Glassmorphism) */
+/* Trạng thái bình thường của nút Đăng nhập */
+.btn-login-custom {
+    background-color: rgba(255, 255, 255, 0.15) !important; /* Trắng mờ trong suốt */
+    color: #ffffff !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+    border-radius: 30px !important;
+    padding: 8px 22px !important;
+    backdrop-filter: blur(5px); /* Hiệu ứng mờ nền kính */
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+    /* Hiệu ứng Hover - Làm nút sáng lên và nổi bật */
+    .btn-login-custom:hover {
+        background-color: #ffffff !important; /* Chuyển hẳn sang nền trắng */
+        color: #795FCD !important; /* Chữ chuyển sang màu tím chủ đạo */
+        border-color: #ffffff !important;
+        transform: translateY(-2px); /* Nhích nhẹ lên trên */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        filter: none;
+    }
+
+/* =========================================
+   5. DANH SÁCH NHIỆM VỤ (Todo Cards)
+   ========================================= */
+.task-card {
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: white;
+}
+
+    .task-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.08) !important;
+    }
+
+/* Nhãn danh mục (Category Badges) */
+.bg-info-soft {
+    background-color: #e0f2f1 !important;
+    color: #00796b !important;
+    font-size: 0.75rem;
+    padding: 0.5em 1em;
+    border-radius: 50px;
+}
+
+/* Trạng thái hoàn thành */
+.text-decoration-line-through {
+    color: #adb5bd !important;
+    font-style: italic;
+}
+/* Loại bỏ dòng này nếu có: overflow: hidden; */
+.card {
+    border-radius: 12px;
+    overflow: visible !important; /* Cho phép menu con hiển thị tràn ra ngoài Card */
+    position: relative;
+    z-index: 1;
+}
+
+/* Đảm bảo danh sách không cắt cụt menu */
+.todo-list {
+    padding-bottom: 50px; /* Tạo khoảng trống phía dưới để menu cuối cùng không bị mất */
+}
+
+/* Ép menu dropdown luôn nằm trên cùng */
+.dropdown-menu {
+    z-index: 1050 !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    border: none !important;
+}
+
+/* Sửa lại class card trong site.css */
+.card {
+    border-radius: 12px;
+    border: none;
+    /* KHÔNG ĐƯỢC để overflow: hidden ở đây */
+    overflow: visible !important;
+    position: relative;
+}
+
+/* Ép menu Dropdown luôn nổi lên trên cùng các thành phần khác */
+.dropdown-menu {
+    position: absolute !important;
+    z-index: 9999 !important; /* Đảm bảo cao hơn tất cả các card khác */
+    margin-top: 5px !important;
+}
+
+/* Đảm bảo thẻ card chứa dropdown có z-index ưu tiên khi menu mở */
+.task-card:focus-within {
+    z-index: 10;
+}
+/* Làm đẹp các mục trong Sidebar */
+#sidebar-wrapper .list-group-item {
+    transition: all 0.3s ease;
+    border-radius: 8px; /* Bo góc nhẹ cho giống nút bấm */
+    margin: 2px 10px; /* Tạo khoảng cách lề */
+    width: auto;
+}
+
+    #sidebar-wrapper .list-group-item:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: #795FCD !important; /* Đổi chữ sang màu tím giống Navbar của bạn */
+        transform: translateX(5px); /* Hiệu ứng nhích nhẹ sang phải */
+    }
+.bg-secondary {
+    --bs-bg-opacity: 1;
+    background-color: rgb(141 119 212) !important;
+}
+.bg-secondary:active {
+    --bs-bg-opacity: 1;
+    background-color: white !important;
+}
+/* Sidebar Icons & Text Colors */
+/* 1. SIDEBAR NEON (Dành cho nền tối) */
+#sidebar-wrapper .list-group-item {
+    background-color: transparent !important;
+    border: none;
+    margin: 5px 12px;
+    border-radius: 10px;
+    transition: 0.3s;
+    color: #e0e0e0 !important;
+}
+
+/* Gán màu icon Neon theo đúng tên danh mục của bạn */
+.bi-tag-fill.text-warning {
+    color: #FFD54F !important;
+}
+/* Học tập - Vàng hổ phách */
+.bi-tag-fill.text-info {
+    color: #4FC3F7 !important;
+}
+/* Công việc - Xanh Sky */
+.bi-tag-fill.text-danger {
+    color: #FF8A65 !important;
+}
+/* Design - Cam hồng */
+.bi-tag-fill.text-success {
+    color: #81C784 !important;
+}
+/* Mobile - Xanh Mint */
+
+#sidebar-wrapper .list-group-item:hover {
+    background-color: rgba(121, 95, 205, 0.15) !important;
+    transform: translateX(8px);
+}
+
+/* 2. BADGE NHIỆM VỤ (Phối màu Nền nhạt - Chữ đậm) */
+.badge-design {
+    background: #FCE4EC !important;
+    color: #C2185B !important;
+    border-radius: 50px;
+}
+
+.badge-study {
+    background: #FFF9C4 !important;
+    color: #FBC02D !important;
+    border-radius: 50px;
+}
+
+.badge-mobile {
+    background: #E8F5E9 !important;
+    color: #388E3C !important;
+    border-radius: 50px;
+}
+
+/* 3. ĐẢM BẢO MENU KHÔNG BỊ ẨN (Lỗi quan trọng nhất của bạn) */
+.task-card {
+    overflow: visible !important;
+    position: relative;
+    z-index: 1;
+}
+
+.dropdown-menu {
+    z-index: 1060 !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    /* Tổng thể Sidebar */
+    .custom-sidebar {
+        background-color: #212529 !important;
+    }
+
+        .custom-sidebar .list-group-item {
+            background-color: transparent !important;
+            color: #adb5bd !important; /* Chữ màu xám nhạt */
+            border: none;
+            margin: 4px 15px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+            /* Hiệu ứng Hover chung */
+            .custom-sidebar .list-group-item:hover {
+                background-color: rgba(255, 255, 255, 0.05) !important;
+                color: #fff !important;
+                transform: translateX(5px);
+            }
+    /* Đổ màu Neon cho từng Icon và hiệu ứng Hover riêng biệt */
+    .nav-study i {
+        color: #FFD54F !important;
+    }
+    /* Vàng sáng */
+    .nav-study:hover {
+        box-shadow: inset 4px 0 0 #FFD54F;
+    }
+
+    .nav-work i {
+        color: #4FC3F7 !important;
+    }
+    /* Xanh Cyan */
+    .nav-work:hover {
+        box-shadow: inset 4px 0 0 #4FC3F7;
+    }
+
+    .nav-design i {
+        color: #FF7043 !important;
+    }
+    /* Cam San Hô (Khớp với nút Đăng ký) */
+    .nav-design:hover {
+        box-shadow: inset 4px 0 0 #FF7043;
+    }
+
+    .nav-mobile i {
+        color: #81C784 !important;
+    }
+    /* Xanh Mint */
+    .nav-mobile:hover {
+        box-shadow: inset 4px 0 0 #81C784;
+    }
+    /* Nút Xóa ngay trong Modal xác nhận xóa */
+    .btn-danger-neon {
+        background-color: #FF5252 !important;
+        border: none !important;
+        border-radius: 25px !important;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(255, 82, 82, 0.3);
+    }
+    /* Nút Lưu nhiệm vụ trong Modal thêm mới */
+    #createTaskModal .btn-primary {
+        background-color: #795FCD !important;
+        border: none !important;
+        border-radius: 25px !important;
+        padding: 8px 25px !important;
+        transition: 0.3s;
+    }
+
+        #createTaskModal .btn-primary:hover {
+            background-color: #644ab5 !important;
+            box-shadow: 0 5px 15px rgba(121, 95, 205, 0.4);
+        }
+    /* Trạng thái bình thường */
+    .navbar .search-input-custom {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        color: white !important;
+        border-radius: 20px !important;
+        transition: all 0.2s ease-in-out !important;
+    }
+        /* KHI BẤM VÀO - ÉP ĐỔI MÀU TRẮNG TUYỆT ĐỐI */
+        .navbar .search-input-custom:focus,
+        .navbar .search-input-custom:active {
+            background-color: #ffffff !important;
+            color: #212529 !important; /* Chữ tối để đọc rõ trên nền trắng */
+            border-color: #ffffff !important;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6) !important;
+            outline: none !important;
+        }
+            /* Đổi màu chữ placeholder khi focus để không bị tàng hình */
+            .navbar .search-input-custom:focus::placeholder {
+                color: #adb5bd !important;
+            }
+    /* Tăng độ ưu tiên bằng cách trỏ đích danh từ thẻ header */
+    header .navbar .form-control.search-input-custom {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        color: #ffffff !important;
+        border-radius: 20px !important;
+        padding: 8px 20px !important;
+        width: 350px !important; /* Đảm bảo độ rộng không bị co mất */
+        display: block !important; /* Hiện lại nếu đang bị ẩn */
+        transition: all 0.3s ease !important;
+    }
+    /* Màu chữ placeholder để nhìn thấy dòng "Tìm kiếm..." */
+    header .navbar .search-input-custom::placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+    /* KHI CLICK VÀO: Bừng sáng trắng đặc */
+    header .navbar .search-input-custom:focus {
+        background-color: #ffffff !important;
+        color: #212529 !important; /* Chữ đen để dễ đọc */
+        border-color: #ffffff !important;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.8) !important;
+        width: 400px !important; /* Hiệu ứng giãn nhẹ ra khi focus cho xịn */
+        outline: none !important;
+    }
+    /* Trạng thái bình thường: Kính mờ nhẹ */
+    .navbar .search-input-custom {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: white !important;
+        padding: 8px 25px !important;
+        transition: all 0.3s ease !important;
+        display: block !important;
+        min-width: 300px;
+    }
+        /* Khi di chuột qua (Hover) */
+        .navbar .search-input-custom:hover {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        /* KHI BẤM VÀO (FOCUS): Đổi sang màu TRẮNG ĐẶC */
+        .navbar .search-input-custom:focus {
+            background-color: #ffffff !important; /* Đổi nền trắng */
+            color: #212529 !important; /* Đổi chữ đen */
+            border-color: #ffffff !important;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5) !important;
+            outline: none !important;
+        }
+    /* Chỉnh màu chữ placeholder khi chưa bấm */
+    .search-input-custom::placeholder {
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+    /* Chỉnh màu chữ placeholder khi đã bấm (trên nền trắng) */
+    .search-input-custom:focus::placeholder {
+        color: #adb5bd !important;
     }
