@@ -4,39 +4,50 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Chi tiết công việc</h1>
 
 <div>
     <h4>TodoTask</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsCompleted)
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.trangThai)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsCompleted)
+        <dd class="col-sm-10">
+            @(Model.trangThai ? "Đã hoàn thành" : "Chưa xong")
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.danhMuc)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.danhMuc)
+        </dd>
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedAt)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CreatedAt)
         </dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Sửa</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">Sửa</a> |
     <a asp-action="Index">Trở về trang danh sách</a>
 </div>
