@@ -15,5 +15,7 @@ namespace Todo_list.Models
 
         [Required]
         public string Password { get; set; } = string.Empty;
+
+
     }
 }

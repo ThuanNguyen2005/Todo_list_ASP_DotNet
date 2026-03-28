@@ -1,25 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
+//using Microsoft.AspNetCore.Authorization;
+//using System.Security.Claims;
 using Todo_list.Data;
 using Todo_list.Models;
 
 namespace Todo_list.Controllers
 {
-    [Authorize]
+    
     public class TodoTasksController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private string GetCurrentUser()
+
+        {
+            return HttpContext.Session.GetString("username");
+        }
 
         public TodoTasksController(ApplicationDbContext context)
         {
             _context = context;
         }
-    
-        public async Task<IActionResult> Index(string searchTerm, string category)
+
+        //MẤY CÁI CHUYỂN THÀNH GHI CHÚ LÀ BỎ ĐI 
+
+        /*public async Task<IActionResult> Index(string searchTerm, string category)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var tasks = _context.TodoTasks
                                 .Where(t => t.UserId == userId)
@@ -41,9 +48,38 @@ namespace Todo_list.Controllers
 
             return View(result);
         }
+        */
+        public async Task<IActionResult> Index(string searchTerm, string category)
+        {
+            var username = GetCurrentUser();
 
-   
-        public IActionResult Create()
+            if (username == null)
+                return RedirectToAction("Login", "Auth");
+
+            var tasks = _context.TodoTasks
+                                .Where(t => t.UserId == username)
+                                //.Where(t => t.Username == username)
+                                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                tasks = tasks.Where(t => t.Title != null &&
+                    EF.Functions.Like(t.Title, $"%{searchTerm}%"));
+            }
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                tasks = tasks.Where(t => t.danhMuc == category);
+            }
+
+            var result = await tasks
+                .OrderByDescending(t => t.CreatedAt)
+                .ToListAsync();
+
+            return View(result);
+        }
+
+        /*public IActionResult Create()
         {
             return View();
         }
@@ -66,14 +102,38 @@ namespace Todo_list.Controllers
 
             return View(task);
         }
+        */
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(TodoTask task)
+        {
+            var username = GetCurrentUser();
+
+            if (username == null)
+                return RedirectToAction("Login", "Auth");
+
+            if (ModelState.IsValid)
+            {
+                task.CreatedAt = DateTime.Now;
+                task.UserId = username; 
+
+                _context.Add(task);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(task);
+        }
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var username = GetCurrentUser();
 
             var task = await _context.TodoTasks
-                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == username);
 
             if (task == null) return NotFound();
 
@@ -85,10 +145,11 @@ namespace Todo_list.Controllers
         {
             if (id != task.Id) return NotFound();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var username = GetCurrentUser();
 
             var existingTask = await _context.TodoTasks
-                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == username);
 
             if (existingTask == null) return NotFound();
 
@@ -110,10 +171,11 @@ namespace Todo_list.Controllers
         {
             if (id == null) return NotFound();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var username = GetCurrentUser();
 
             var task = await _context.TodoTasks
-                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == username);
 
             if (task == null) return NotFound();
 
@@ -124,10 +186,11 @@ namespace Todo_list.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var username = GetCurrentUser();
 
             var task = await _context.TodoTasks
-                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == username);
 
             if (task != null)
             {
@@ -139,10 +202,11 @@ namespace Todo_list.Controllers
         }
         public async Task<IActionResult> ToggleComplete(int id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var username = GetCurrentUser();
 
             var task = await _context.TodoTasks
-                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == username);
 
             if (task == null) return NotFound();
 
@@ -151,6 +215,11 @@ namespace Todo_list.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Auth");
         }
     }
 }
