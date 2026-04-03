@@ -46,7 +46,10 @@
             <!-- CATEGORY -->
             <div class="form-group mb-3">
                 <label asp-for="danhMuc" class="control-label">Danh mục</label>
-                <input asp-for="danhMuc" class="form-control" />
+                <select asp-for="danhMuc" class="form-select"
+                        asp-items="@(new SelectList(ViewBag.Categories))">
+                    <option value="">-- Chọn danh mục --</option>
+                </select>
                 <span asp-validation-for="danhMuc" class="text-danger"></span>
             </div>
 

@@ -20,6 +20,7 @@ namespace Todo_list.Controllers
         public async Task<IActionResult> Index(string searchTerm, string category)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewBag.Categories = new List<string> { "Học tập", "Công việc", "Design", "Mobile" };
 
             var tasks = _context.TodoTasks
                                 .Where(t => t.UserId == userId)
@@ -41,11 +42,14 @@ namespace Todo_list.Controllers
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
 
-            return View(result);
+            return View(await tasks.OrderByDescending(t => t.CreatedAt).ToListAsync());
         }
 
+        // GET: TodoTasks/Create
         public IActionResult Create()
         {
+            // THÊM DÒNG NÀY:
+            ViewBag.Categories = new List<string> { "Học tập", "Công việc", "Design", "Mobile" };
             return View();
         }
 
@@ -56,18 +60,20 @@ namespace Todo_list.Controllers
             if (ModelState.IsValid)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
                 task.CreatedAt = DateTime.Now;
                 task.UserId = userId;
 
                 _context.Add(task);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
 
+            // THÊM DÒNG NÀY: Để nếu lỗi (ví dụ quên nhập Tiêu đề) thì Dropdown không bị sập
+            ViewBag.Categories = new List<string> { "Học tập", "Công việc", "Design", "Mobile" };
+
             return View(task);
         }
+
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -79,6 +85,8 @@ namespace Todo_list.Controllers
                 .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
 
             if (task == null) return NotFound();
+
+            ViewBag.Categories = new List<string> { "Học tập", "Công việc", "Design", "Mobile" };
 
             return View(task);
         }
@@ -102,17 +110,17 @@ namespace Todo_list.Controllers
                 existingTask.Description = task.Description;
                 existingTask.danhMuc = task.danhMuc;
                 existingTask.trangThai = task.trangThai;
-
-                // ✅ SỬA QUAN TRỌNG
                 existingTask.Deadline = task.Deadline;
 
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewBag.Categories = new List<string> { "Học tập", "Công việc", "Design", "Mobile" };
+
             return View(task);
         }
+
 
         public async Task<IActionResult> Delete(int? id)
         {

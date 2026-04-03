@@ -124,7 +124,16 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label small fw-bold">Danh mục</label>
-                            <input name="danhMuc" class="form-control rounded-3">
+                            <select name="danhMuc" class="form-select rounded-3">
+                                <option value="">-- Chọn danh mục --</option>
+                                @if (ViewBag.Categories != null)
+                                {
+                                    foreach (var item in ViewBag.Categories)
+                                    {
+                                        <option value="@item">@item</option>
+                                    }
+                                }
+                            </select>
                         </div>
                     </div>
 
