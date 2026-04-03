@@ -7,7 +7,9 @@ namespace Todo_list.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Tên danh mục không được để trống")]
+        [Display(Name = "Tên danh mục")]
         public string Name { get; set; } = string.Empty;
+        public ICollection<TodoTask>? TodoTasks { get; set; }
     }
 }

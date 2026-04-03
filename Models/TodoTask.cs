@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace Todo_list.Models
 {
@@ -6,7 +7,9 @@ namespace Todo_list.Models
     {
         [Key]
         public int Id { get; set; }
+
         public string? UserId { get; set; }
+        public IdentityUser? User { get; set; }
 
         [Required(ErrorMessage = "Tiêu đề không được để trống")]
         [Display(Name = "Tiêu đề")]

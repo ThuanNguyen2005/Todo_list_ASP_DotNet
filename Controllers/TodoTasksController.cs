@@ -16,7 +16,7 @@ namespace Todo_list.Controllers
         {
             _context = context;
         }
-    
+
         public async Task<IActionResult> Index(string searchTerm, string category)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -24,11 +24,13 @@ namespace Todo_list.Controllers
             var tasks = _context.TodoTasks
                                 .Where(t => t.UserId == userId)
                                 .AsQueryable();
+
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 tasks = tasks.Where(t => t.Title != null &&
                     EF.Functions.Like(t.Title, $"%{searchTerm}%"));
             }
+
             if (!string.IsNullOrEmpty(category))
             {
                 tasks = tasks.Where(t => t.danhMuc != null &&
@@ -42,11 +44,11 @@ namespace Todo_list.Controllers
             return View(result);
         }
 
-   
         public IActionResult Create()
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TodoTask task)
@@ -66,6 +68,7 @@ namespace Todo_list.Controllers
 
             return View(task);
         }
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -79,6 +82,7 @@ namespace Todo_list.Controllers
 
             return View(task);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TodoTask task)
@@ -99,6 +103,9 @@ namespace Todo_list.Controllers
                 existingTask.danhMuc = task.danhMuc;
                 existingTask.trangThai = task.trangThai;
 
+                // ✅ SỬA QUAN TRỌNG
+                existingTask.Deadline = task.Deadline;
+
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
@@ -106,6 +113,7 @@ namespace Todo_list.Controllers
 
             return View(task);
         }
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -137,6 +145,7 @@ namespace Todo_list.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
         public async Task<IActionResult> ToggleComplete(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

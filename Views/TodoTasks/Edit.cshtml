@@ -8,50 +8,67 @@
 
 <h4>TodoTask</h4>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            @* Cần giữ lại Id và các trường ẩn để không bị mất dữ liệu khi Update *@
+
+            <!-- GIỮ ID -->
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="UserId" />
 
-            <div class="form-group">
+            <!-- TITLE -->
+            <div class="form-group mb-3">
                 <label asp-for="Title" class="control-label">Tiêu đề</label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <!-- DESCRIPTION -->
+            <div class="form-group mb-3">
                 <label asp-for="Description" class="control-label">Mô tả</label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
-            <div class="form-group form-check">
+            <!-- STATUS -->
+            <div class="form-group form-check mb-3">
                 <label class="form-check-label">
-                    @* Đổi IsCompleted thành trangThai để khớp Model *@
-                    <input class="form-check-input" asp-for="trangThai" /> @Html.DisplayNameFor(model => model.trangThai)
+                    <input class="form-check-input" asp-for="trangThai" />
+                    @Html.DisplayNameFor(model => model.trangThai)
                 </label>
             </div>
 
-            <div class="form-group">
+            <!-- CATEGORY -->
+            <div class="form-group mb-3">
                 <label asp-for="danhMuc" class="control-label">Danh mục</label>
                 <input asp-for="danhMuc" class="form-control" />
                 <span asp-validation-for="danhMuc" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label">Ngày tạo</label>
-                <input asp-for="CreatedAt" class="form-control" readonly />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+            <!-- DEADLINE -->
+            <div class="form-group mb-3">
+                <label asp-for="Deadline" class="control-label">Hạn chót</label>
+                <input asp-for="Deadline" type="date" class="form-control" />
+                <span asp-validation-for="Deadline" class="text-danger"></span>
             </div>
 
+            <!-- CREATED AT -->
+            <div class="form-group mb-3">
+                <label asp-for="CreatedAt" class="control-label">Ngày tạo</label>
+                <input asp-for="CreatedAt" class="form-control" readonly />
+            </div>
+
+            <!-- BUTTON -->
             <div class="form-group mt-3">
                 <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
             </div>
+
         </form>
     </div>
 </div>
