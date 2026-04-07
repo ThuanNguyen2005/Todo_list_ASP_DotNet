@@ -42,13 +42,11 @@ namespace Todo_list.Controllers
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
 
-            return View(await tasks.OrderByDescending(t => t.CreatedAt).ToListAsync());
+            return View(result);
         }
 
-        // GET: TodoTasks/Create
         public IActionResult Create()
         {
-            // THÊM DÒNG NÀY:
             ViewBag.Categories = new List<string> { "Học tập", "Công việc", "Design", "Mobile" };
             return View();
         }
@@ -68,7 +66,6 @@ namespace Todo_list.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // THÊM DÒNG NÀY: Để nếu lỗi (ví dụ quên nhập Tiêu đề) thì Dropdown không bị sập
             ViewBag.Categories = new List<string> { "Học tập", "Công việc", "Design", "Mobile" };
 
             return View(task);

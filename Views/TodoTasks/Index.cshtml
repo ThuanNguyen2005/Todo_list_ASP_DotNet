@@ -75,13 +75,10 @@
 
                         <!-- XÓA -->
                         <li>
-                            <form asp-action="Delete" method="post" onsubmit="return confirm('Bạn chắc chắn muốn xóa?');">
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" name="id" value="@task.Id" />
-                                <button type="submit" class="dropdown-item text-danger">
-                                    <i class="bi bi-trash me-2"></i> Xóa
-                                </button>
-                            </form>
+                            <a class="dropdown-item text-danger py-2"
+                                   href="/TodoTasks/Delete/@task.Id">
+                                <i class="bi bi-trash me-2"></i> Xóa
+                            </a>
                         </li>
 
                     </ul>
@@ -113,18 +110,18 @@
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Mô tả</label>
-                        <textarea name="Description" class="form-control rounded-3"></textarea>
+                        <textarea name="Description" class="form-control rounded-3" required></textarea>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label small fw-bold">Hạn chót</label>
-                            <input name="Deadline" type="date" class="form-control rounded-3">
+                            <input name="Deadline" type="date" class="form-control rounded-3" required>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label small fw-bold">Danh mục</label>
-                            <select name="danhMuc" class="form-select rounded-3">
+                            <select name="danhMuc" class="form-select rounded-3" required>
                                 <option value="">-- Chọn danh mục --</option>
                                 @if (ViewBag.Categories != null)
                                 {
