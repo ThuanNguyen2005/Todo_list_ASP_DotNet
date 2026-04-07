@@ -10,11 +10,12 @@ namespace Todo_list
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
-            // Cấu hình Identity duy nhất và chuẩn
+
             builder.Services.AddDefaultIdentity<IdentityUser>(options => {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = false;
@@ -26,12 +27,10 @@ namespace Todo_list
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages(); // Quan trọng cho Identity
 
             var app = builder.Build();
-            app.UseAuthentication(); // Xác thực (Ai đang vào web?)
-            app.UseAuthorization();  // Phân quyền (Họ được làm gì?)
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -39,21 +38,23 @@ namespace Todo_list
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthentication(); // THÊM DÒNG NÀY Ở ĐÂY
+            // Chỉ gọi 1 lần duy nhất theo đúng thứ tự này
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=TodoTasks}/{action=Index}/{id?}");
-            app.MapRazorPages(); // Đảm bảo có dòng này để trang Login hoạt động
+                name: "default",
+                pattern: "{controller=TodoTasks}/{action=Index}/{id?}");
+
+            app.MapRazorPages();
 
             app.Run();
         }

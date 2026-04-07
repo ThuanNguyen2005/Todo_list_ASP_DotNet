@@ -58,17 +58,15 @@ header .navbar .form-control.search-input-custom {
     transition: all 0.3s ease !important;
 }
 
-/* Màu chữ placeholder để nhìn thấy dòng "Tìm kiếm..." */
 header .navbar .search-input-custom::placeholder {
     color: rgba(255, 255, 255, 0.7) !important;
 }
 
-/* KHI CLICK VÀO: Bừng sáng trắng đặc */
 header .navbar .search-input-custom:focus {
     background-color: #ffffff !important;
-    color: #212529 !important; /* Chữ đen để dễ đọc */
+    color: #212529 !important; 
     border-color: #ffffff !important;
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.8) !important;
-    width: 400px !important; /* Hiệu ứng giãn nhẹ ra khi focus cho xịn */
+    width: 400px !important; 
     outline: none !important;
 }

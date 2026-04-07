@@ -17,6 +17,7 @@ namespace Todo_list.Controllers
             _context = context;
         }
 
+        // GET: TodoTasks
         public async Task<IActionResult> Index(string searchTerm, string category)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -42,17 +43,17 @@ namespace Todo_list.Controllers
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
 
-            return View(await tasks.OrderByDescending(t => t.CreatedAt).ToListAsync());
+            return View(result);
         }
 
         // GET: TodoTasks/Create
         public IActionResult Create()
         {
-            // THÊM DÒNG NÀY:
             ViewBag.Categories = new List<string> { "Học tập", "Công việc", "Design", "Mobile" };
             return View();
         }
 
+        // POST: TodoTasks/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TodoTask task)
@@ -68,13 +69,11 @@ namespace Todo_list.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // THÊM DÒNG NÀY: Để nếu lỗi (ví dụ quên nhập Tiêu đề) thì Dropdown không bị sập
             ViewBag.Categories = new List<string> { "Học tập", "Công việc", "Design", "Mobile" };
-
             return View(task);
         }
 
-
+        // GET: TodoTasks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -91,6 +90,7 @@ namespace Todo_list.Controllers
             return View(task);
         }
 
+        // POST: TodoTasks/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TodoTask task)
@@ -121,7 +121,7 @@ namespace Todo_list.Controllers
             return View(task);
         }
 
-
+        // GET: TodoTasks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -136,6 +136,7 @@ namespace Todo_list.Controllers
             return View(task);
         }
 
+        // POST: TodoTasks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -154,6 +155,7 @@ namespace Todo_list.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: TodoTasks/ToggleComplete/5
         public async Task<IActionResult> ToggleComplete(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -163,9 +165,17 @@ namespace Todo_list.Controllers
 
             if (task == null) return NotFound();
 
+            // Đảo ngược trạng thái hoàn thành
             task.trangThai = !task.trangThai;
 
             await _context.SaveChangesAsync();
+
+            // Lấy URL trang trước đó để không bị mất filter tìm kiếm/danh mục
+            var referer = Request.Headers["Referer"].ToString();
+            if (!string.IsNullOrEmpty(referer))
+            {
+                return Redirect(referer);
+            }
 
             return RedirectToAction(nameof(Index));
         }

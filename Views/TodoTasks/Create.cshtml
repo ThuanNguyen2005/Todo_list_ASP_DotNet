@@ -31,16 +31,8 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
-            <!-- STATUS -->
-            <div class="form-group form-check mb-3">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="trangThai" />
-                    @Html.DisplayNameFor(model => model.trangThai)
-                </label>
-            </div>
-
             <!-- CATEGORY -->
-            <<div class="form-group mb-3">
+            <div class="form-group mb-3">
                 <label asp-for="danhMuc" class="control-label">Danh mục</label>
                 <select asp-for="danhMuc" class="form-select"
                         asp-items="@(new SelectList(ViewBag.Categories))">
@@ -56,7 +48,7 @@
                 <span asp-validation-for="Deadline" class="text-danger"></span>
             </div>
 
-            <!-- BUTTON -->
+            <!-- BUTTON --> 
             <div class="form-group mt-3">
                 <input type="submit" value="Tạo mới" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
