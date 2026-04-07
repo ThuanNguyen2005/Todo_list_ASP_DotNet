@@ -46,7 +46,6 @@ namespace Todo_list.Controllers
             return View(result);
         }
 
-        // GET: TodoTasks/Create
         public IActionResult Create()
         {
             ViewBag.Categories = new List<string> { "Học tập", "Công việc", "Design", "Mobile" };
